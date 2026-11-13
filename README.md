@@ -1,4 +1,4 @@
-# DLRG Drehkreuz‑Armbändchen
+# Drehkreuz‑Armbändchen
 
 Dieses Projekt verwaltet die Ausgabe und Rückgabe von Armbändern mit Chip‑Nummer
 für ein Drehkreuz‑System. Es ist **plattformunabhängig** und läuft unter
