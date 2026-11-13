@@ -5,6 +5,8 @@ für ein Drehkreuz‑System. Es ist **plattformunabhängig** und läuft unter
 Windows, Linux und Android (PWA). Der Server ist in **Python 3.11+** mit
 FastAPI implementiert, die Datenbank ist SQLite und das Frontend ist ein React‑SPA
 gebaut mit Vite.
+Es wurde  mit KI erzeugt.
+
 
 ## Features
 
