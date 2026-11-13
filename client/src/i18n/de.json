@@ -1,0 +1,18 @@
+{
+  "login.title": "Anmelden",
+  "login.username": "Benutzername",
+  "login.password": "Passwort",
+  "login.button": "Anmelden",
+  "dashboard.title": "Drehkreuz‑Armbändchen",
+  "dashboard.issue": "Ausgeben",
+  "dashboard.return": "Zurücknehmen",
+  "dashboard.person": "Person",
+  "dashboard.lastExport": "Letzter Export: {{time}}",
+  "modal.issue.title": "Band ausgeben",
+  "modal.return.title": "Band zurücknehmen",
+  "error.bandAlreadyIssued": "Band ist bereits ausgegeben",
+  "error.bandNotIssued": "Band ist nicht ausgegeben",
+  "error.generic": "Ein Fehler ist aufgetreten",
+  "button.close": "Schließen",
+  "button.save": "Speichern"
+}

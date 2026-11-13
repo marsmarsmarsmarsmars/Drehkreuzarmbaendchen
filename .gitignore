@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.db
+venv/
+
+# Node / Vite
+node_modules/
+dist/
+.env
+npm-debug.log
+yarn-error.log
+
+# OS files
+Thumbs.db
+Desktop.ini
