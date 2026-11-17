@@ -80,25 +80,44 @@ npm run dev   # Vite dev‑Server, standardmäßig http://localhost:5173
 ```
 Das Frontend kommuniziert mit dem Backend über `http://localhost:8000/api`.
 
-### Docker‑Deployment
+### Docker‑Deployment (komplettes Setup)
 
-Ein einziger Container übernimmt sowohl Backend als auch das gebaute Frontend. Die SQLite‑Datenbank wird in einem Docker‑Volume gespeichert, sodass die Daten bei Neustarts erhalten bleiben.
+Um das Projekt komplett über Docker zu starten, folgen Sie diesen Schritten:
 
-**Starten**
+1. **Repository klonen**
+   ```bash
+   git clone https://github.com/…/Drehkreuzarmbändchen.git
+   cd Drehkreuzarmbändchen
+   ```
 
-```bash
-docker compose up --build -d
-```
+2. **Voraussetzungen prüfen**
+   * Docker Engine (>= 20)
+   * Docker Compose Plugin (oder `docker-compose`)
 
-Die Anwendung ist dann unter `http://localhost:8000` erreichbar.
+3. **Docker‑Image bauen und starten**
+   ```bash
+   docker compose up --build -d
+   ```
 
-**Stoppen & Entfernen**
+   Der Build besteht aus zwei Stufen:
+   * Frontend wird mit Node 20 gebaut und die statischen Dateien nach `client/dist` kopiert.
+   * Das Python‑Backend wird mit FastAPI gestartet und die statischen Dateien werden über `app.mount("/")` bereitgestellt.
 
-```bash
-docker compose down
-```
+4. **Anwendung erreichen**
 
-Das benannte Volume `data` speichert die Datei `data/data.db` persistent.
+   Öffnen Sie Ihren Browser unter `http://localhost:8000`. Das Frontend wird vom Backend‑Container ausgeliefert und greift auf die SQLite‑Datenbank zu.
+
+5. **Container stoppen und entfernen**
+   ```bash
+   docker compose down
+   ```
+
+   Das benannte Volume `data` bleibt erhalten und speichert die Datei `data/data.db` dauerhaft. Für ein komplettes Zurücksetzen können Sie das Volume entfernen:
+
+   ```bash
+   docker compose down -v
+   ```
+
 
 
 ### Benutzer anlegen (einmalig)
