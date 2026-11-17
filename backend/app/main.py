@@ -5,6 +5,7 @@ router with all endpoints and launches the background export worker.
 """
 
 import jwt
+import os
 from datetime import timedelta
 from typing import Generator
 
@@ -13,6 +14,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
+from fastapi.staticfiles import StaticFiles
 
 from . import models, crud, auth, i18n, scheduler
 from .models import (
@@ -28,7 +30,9 @@ from .models import (
 )
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
-SQLITE_PATH = os.path.join(BASE_DIR, "data.db")
+DATA_DIR = os.path.join(BASE_DIR, "data")
+os.makedirs(DATA_DIR, exist_ok=True)
+SQLITE_PATH = os.path.join(BASE_DIR, "data", "data.db")
 engine = create_engine(f"sqlite:///" + SQLITE_PATH, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -45,6 +49,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+# Serve built frontend
+app.mount("/", StaticFiles(directory=os.path.join(BASE_DIR, "client", "dist"), html=True)
 
 
 # Dependency – provides a DB session per request

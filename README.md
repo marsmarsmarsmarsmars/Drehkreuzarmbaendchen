@@ -80,6 +80,27 @@ npm run dev   # Vite dev‑Server, standardmäßig http://localhost:5173
 ```
 Das Frontend kommuniziert mit dem Backend über `http://localhost:8000/api`.
 
+### Docker‑Deployment
+
+Ein einziger Container übernimmt sowohl Backend als auch das gebaute Frontend. Die SQLite‑Datenbank wird in einem Docker‑Volume gespeichert, sodass die Daten bei Neustarts erhalten bleiben.
+
+**Starten**
+
+```bash
+docker compose up --build -d
+```
+
+Die Anwendung ist dann unter `http://localhost:8000` erreichbar.
+
+**Stoppen & Entfernen**
+
+```bash
+docker compose down
+```
+
+Das benannte Volume `data` speichert die Datei `data/data.db` persistent.
+
+
 ### Benutzer anlegen (einmalig)
 Im Backend‑Ordner ein Python‑Shell öffnen und folgenden Code ausführen:
 ```python
@@ -97,7 +118,7 @@ Damit kann man sich mit `admin / admin123` einloggen.
 
 * **API‑Dokumentation** – automatisch verfügbar unter `http://localhost:8000/docs`
 * **Export‑Verzeichnis** – `backend/export/` enthält `export.json` und `export.csv`
-* **Docker‑Deployment** – Siehe `docker-compose.yml` (nicht Teil des Minimal‑Setups)
+* **Docker‑Deployment** – Siehe `docker-compose.yml` für ein gemeinsames Front‑/Backend‑Image mit persistentem SQLite‑Volume
 
 ---
 
