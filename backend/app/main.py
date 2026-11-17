@@ -29,7 +29,7 @@ from .models import (
     IssueRead,
 )
 
-BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 os.makedirs(DATA_DIR, exist_ok=True)
 SQLITE_PATH = os.path.join(BASE_DIR, "data", "data.db")
@@ -208,5 +208,17 @@ def export_data(format: str = "json", db: Session = Depends(get_db), current_use
 @app.on_event("startup")
 def start_background_tasks():
     import asyncio
+    # Ensure an admin user exists (default admin:admin) for first start
+    db = SessionLocal()
+    try:
+        admin_exists = db.query(models.User).filter(models.User.role == "admin").first()
+        if not admin_exists:
+            # Create default admin user; password could be set via env vars for security
+            default_username = os.getenv("DEFAULT_ADMIN_USER", "admin")
+            default_password = os.getenv("DEFAULT_ADMIN_PASSWORD", "admin")
+            # Directly use CRUD to create with admin role
+            crud.create_user(db, username=default_username, password=default_password, role="admin")
+    finally:
+        db.close()
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler.export_worker(SessionLocal))

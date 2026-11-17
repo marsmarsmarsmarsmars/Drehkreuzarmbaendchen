@@ -17,7 +17,7 @@ from sqlalchemy.orm import Session
 
 from . import crud, models
 
-EXPORT_DIR = os.getenv("EXPORT_DIR", os.path.join(os.path.dirname(__file__), "..", "export"))
+EXPORT_DIR = os.getenv("EXPORT_DIR", os.path.join(os.path.dirname(__file__), "..", "data", "export"))
 EXPORT_INTERVAL = timedelta(minutes=30)
 
 

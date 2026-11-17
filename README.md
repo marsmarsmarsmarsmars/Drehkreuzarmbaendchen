@@ -120,18 +120,11 @@ Um das Projekt komplett über Docker zu starten, folgen Sie diesen Schritten:
 
 
 
-### Benutzer anlegen (einmalig)
-Im Backend‑Ordner ein Python‑Shell öffnen und folgenden Code ausführen:
-```python
-from app import crud, models, database
-from sqlalchemy.orm import Session
+### Admin‑Benutzer automatisch angelegt (erster Start)
 
-db: Session = database.SessionLocal()
-# admin‑Benutzer
-crud.create_user(db, username="admin", password="admin123", role="admin")
-db.close()
-```
-Damit kann man sich mit `admin / admin123` einloggen.
+Beim ersten Start des Docker‑Containers wird automatisch ein Admin‑Benutzer (`admin` / `admin123`) angelegt. Das erfolgt im Backend‑Code, sodass kein manuelles Ausführen einer Python‑Shell mehr nötig ist. Sie können sich danach direkt mit `admin / admin123` anmelden.
+
+**Hinweis:** Das Export‑Verzeichnis (`backend/export/`) wird ebenfalls über das Docker‑Volume `data` persistent gespeichert, sodass Export‑Dateien nach einem Neustart erhalten bleiben.
 
 ## Weiterführende Dokumentation
 
