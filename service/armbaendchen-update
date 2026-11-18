@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+APP_DIR="/opt/armbaendchen"
+cd "$APP_DIR"
+git fetch --tags
+LOCAL=$(git rev-parse HEAD)
+REMOTE=$(git rev-parse origin/main)
+if [ "$LOCAL" = "$REMOTE" ]; then
+  echo "Already up to date."
+  exit 0
+fi
+echo "Updating to latest version..."
+git reset --hard origin/main
+source venv/bin/activate
+pip install -r backend/requirements.txt --upgrade
+python -c "from backend.app import models, main; models.Base.metadata.create_all(bind=main.engine)"
+sudo systemctl restart armbaendchen.service
+echo "Update complete."
