@@ -53,7 +53,7 @@ app.add_middleware(
 # Serve built frontend if it exists
 dist_dir = os.path.abspath(os.path.join(BASE_DIR, "..", "client", "dist"))
 if os.path.isdir(dist_dir):
-    app.mount("/", StaticFiles(directory=dist_dir), name="static")
+# Static files will be mounted after API routes (see end of file)
 
 
 # Dependency – provides a DB session per request
@@ -225,3 +225,7 @@ def start_background_tasks():
         db.close()
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler.export_worker(SessionLocal))
+
+# Serve built frontend if it exists
+if os.path.isdir(dist_dir):
+    app.mount("/", StaticFiles(directory=dist_dir), name="static")

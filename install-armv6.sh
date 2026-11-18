@@ -16,7 +16,7 @@ done
 # ----------------------------
 # 1. Required packages (system packages, prefer Debian pre‑compiled versions)
 # ----------------------------
-DEPS=(git python3 python3-venv python3-pip python3-fastapi python3-uvicorn python3-pydantic python3-sqlalchemy python3-bcrypt python3-aiosqlite python3-jwt python3-multipart bc)
+DEPS=(git python3 python3-venv python3-pip python3-fastapi python3-uvicorn python3-pydantic python3-sqlalchemy python3-bcrypt python3-aiosqlite python3-jwt python3-multipart curl tar bc)
 
 if [[ $AUTOYES -eq 1 ]]; then
   echo "Auto‑confirm enabled – proceeding with package installation."
@@ -58,6 +58,22 @@ sudo mkdir -p "$APP_DIR"
 sudo chown armbaendchen:armbaendchen "$APP_DIR"
 sudo -u armbaendchen git clone --depth 1 https://github.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen.git "$APP_DIR"
 cd "$APP_DIR"
+
+# Remove any existing client source (keep only built dist after download)
+if [ -d client ]; then
+  sudo -u armbaendchen rm -rf client
+fi
+
+# Download pre‑built frontend from GitHub release
+FRONTEND_URL="https://github.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/releases/download/frontend-latest/frontend-dist.tar.gz"
+TMP_ARCH="/tmp/frontend-dist.tar.gz"
+# Attempt to fetch – ignore failure on first install if release not yet published
+sudo -u armbaendchen curl -L -o "$TMP_ARCH" "$FRONTEND_URL" || true
+if [ -f "$TMP_ARCH" ]; then
+  sudo -u armbaendchen mkdir -p client/dist
+  sudo -u armbaendchen tar -xzf "$TMP_ARCH" -C client/dist --strip-components=1
+  rm "$TMP_ARCH"
+fi
 
 # ----------------------------
 # 5. Python virtualenv (system‑site‑packages)

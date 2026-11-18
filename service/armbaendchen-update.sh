@@ -27,8 +27,20 @@ if [ "$LOCAL" = "$REMOTE" ]; then
 fi
 
 echo "Updating to latest version..."
-# Reset to latest commit as the proper user
-sudo -u armbaendchen git -C "$APP_DIR" reset --hard origin/main
+# Remove any existing client source code (if present)
+if [ -d client ]; then
+  sudo -u armbaendchen rm -rf client
+fi
+# Download pre‑built frontend from GitHub release
+FRONTEND_URL="https://github.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/releases/download/frontend-latest/frontend-dist.tar.gz"
+TMP_ARCH="/tmp/frontend-dist.tar.gz"
+# Try to fetch; ignore if not yet available (first install)
+sudo -u armbaendchen curl -L -o "$TMP_ARCH" "$FRONTEND_URL" || true
+if [ -f "$TMP_ARCH" ]; then
+  sudo -u armbaendchen mkdir -p client/dist
+  sudo -u armbaendchen tar -xzf "$TMP_ARCH" -C client/dist --strip-components=1
+  rm "$TMP_ARCH"
+fi
 # Install/upgrade Python requirements (still as armbaendchen) without --upgrade flag
 sudo -u armbaendchen bash -c "source venv/bin/activate && pip install --no-cache-dir -r backend/requirements.txt"
 # Apply any database schema changes
