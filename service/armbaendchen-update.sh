@@ -8,6 +8,8 @@ set -e
 # and automatically restores a missing frontend build.
 # ------------------------------------------------------------
 
+APP_DIR="/opt/armbaendchen"
+cd "$APP_DIR"
 # Ensure correct ownership of the whole installation directory before any operations
 sudo chown -R armbaendchen:armbaendchen "$APP_DIR"
 
