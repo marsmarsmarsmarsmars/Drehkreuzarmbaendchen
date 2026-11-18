@@ -84,6 +84,10 @@ curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmba
 curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/main/install-armv6.sh | sudo bash -s -- --yes
 # or set the env var:
 AUTOYES=1 curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/main/install-armv6.sh | sudo bash -s
+# optional cleanup after install (frees space):
+# sudo bash -s -- --cleanup   # or set CLEANUP=1
+# or set the env var:
+CLEANUP=1 curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/main/install-armv6.sh | sudo bash -s
 ```
 
 Der Installer prüft die Python‑Version, installiert notwendige Pakete, legt den System‑Benutzer `armbaendchen` an, klont das Repository nach `/opt/armbaendchen`, richtet ein Python‑Virtualenv ein, erstellt das Daten‑Verzeichnis und installiert den System‑d‑Dienst **armbaendchen.service**.
