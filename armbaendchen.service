@@ -1,5 +1,5 @@
-# Deprecated service file – actual file is located at /opt/armbaendchen/service/armbaendchen.service
-Description=Armbaendchen FastAPI service
+# This file has been moved to service/armbaendchen.service. It is kept for backward compatibility only.
+
 After=network.target
 
 [Service]

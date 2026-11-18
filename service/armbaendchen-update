@@ -1,4 +1,9 @@
+# Deprecated wrapper – calls the new script
 #!/usr/bin/env bash
+set -e
+/opt/armbaendchen/service/armbaendchen-update.sh "$@"
+# Please use /opt/armbaendchen/service/armbaendchen-update.sh instead.
+
 set -e
 APP_DIR="/opt/armbaendchen"
 cd "$APP_DIR"

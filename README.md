@@ -101,10 +101,10 @@ Der Service läuft automatisch nach dem Booten.
 
 ## Update
 
-Ein Update‑Helper ist installiert unter `/opt/armbaendchen/service/armbaendchen-update`. Zum Aktualisieren führen Sie aus:
+Ein Update‑Helper ist installiert unter `/opt/armbaendchen/service/armbaendchen-update.sh`. Zum Aktualisieren führen Sie aus:
 
 ```bash
-sudo /opt/armbaendchen/service/armbaendchen-update
+sudo /opt/armbaendchen/service/armbaendchen-update.sh
 ```
 Der Helper pullt die neuesten Änderungen, installiert neue Python‑Abhängigkeiten, führt ggf. notwendige Datenbankschema‑Updates durch und startet den Service neu.
 

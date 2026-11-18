@@ -77,12 +77,12 @@ sudo systemctl daemon-reload
 sudo systemctl enable --now armbaendchen.service
 
 # 8. Ensure update helper is executable
-sudo chmod +x /opt/armbaendchen/service/armbaendchen-update
+sudo chmod +x /opt/armbaendchen/service/armbaendchen-update.sh
 
 echo "Installation finished. Service is running and can be managed with:"
 echo "  sudo systemctl {start|stop|restart|status} armbaendchen"
 echo "To update later run:"
-echo "  sudo /opt/armbaendchen/service/armbaendchen-update"
+echo "  sudo /opt/armbaendchen/service/armbaendchen-update.sh"
 
 # Optional cleanup of compiler tools and pip cache
 if [[ "$1" == "--cleanup" ]] || [[ -n "$CLEANUP" ]]; then
