@@ -14,7 +14,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from fastapi.staticfiles import StaticFiles
+import asyncio
 
 from . import models, crud, auth, i18n, scheduler
 from .models import (
@@ -108,6 +108,10 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 
 @app.post("/api/users", response_model=UserRead)
 def create_user(user: UserCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    # If no users exist yet, allow creation of the first (admin) user without authentication
+    if db.query(models.User).first() is None:
+        created = crud.create_user(db, username=user.username, password=user.password, role=user.role)
+        return created
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Nur Admins dürfen Benutzer anlegen")
     created = crud.create_user(db, username=user.username, password=user.password, role=user.role)
@@ -208,21 +212,11 @@ def export_data(format: str = "json", db: Session = Depends(get_db), current_use
 
 @app.on_event("startup")
 def start_background_tasks():
-    import asyncio
-    # Ensure an admin user exists (default admin:admin) for first start
-    db = SessionLocal()
-    try:
-        admin_exists = db.query(models.User).filter(models.User.role == "admin").first()
-        if not admin_exists:
-            # Create default admin user; password could be set via env vars for security
-            default_username = os.getenv("DEFAULT_ADMIN_USER", "admin")
-            default_password = os.getenv("DEFAULT_ADMIN_PASSWORD", "admin")
-            # Directly use CRUD to create with admin role
-            crud.create_user(db, username=default_username, password=default_password, role="admin")
-    finally:
-        db.close()
+    # No default admin user is created automatically.
+    # The frontend should prompt the user to create the first account.
     loop = asyncio.get_event_loop()
     loop.create_task(scheduler.export_worker(SessionLocal))
+
 
 # Serve built frontend if it exists
 if os.path.isdir(dist_dir):
