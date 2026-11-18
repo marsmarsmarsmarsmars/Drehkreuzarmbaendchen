@@ -118,6 +118,30 @@ Der Helper pullt die neuesten Änderungen, installiert neue Python‑Abhängigke
 
 ---
 
+## Datenbank
+
+Die SQLite‑Datenbank wird unter dem Installationspfad in einem persistenten Verzeichnis abgelegt:
+```
+/opt/armbaendchen/data/data.db
+```
+Das Verzeichnis `data/` wird vom Installer angelegt und mit dem System‑Benutzer `armbaendchen` besessen, sodass die Datenbank über Neustarts und Service‑Neustarts hinweg erhalten bleibt.
+
+## Erster Admin‑Benutzer
+
+Beim ersten Start ist die Benutzertabelle leer. Das Backend erlaubt das Anlegen des aller‑ersten Benutzers (typischerweise ein Administrator) **ohne Authentifizierung**. Das Frontend bietet jetzt einen Setup‑Screen dafür:
+1. Rufen Sie die Anwendung im Browser auf (z. B. `http://<IP‑Adresse>:8000`).
+2. Klicken Sie auf **„Ersten Admin anlegen“** und geben Sie Benutzername und Passwort ein.
+3. Nach erfolgreicher Erstellung können Sie sich mit den neuen Zugangsdaten anmelden.
+
+Falls Sie das Frontend nicht nutzen, können Sie den ersten Admin‑Benutzer alternativ via `curl` anlegen:
+```bash
+curl -X POST http://<IP>:8000/api/users \
+  -H "Content-Type: application/json" \
+  -d '{"username":"admin","password":"admin","role":"admin"}'
+```
+
+---
+
 Bei Fragen oder Erweiterungswünschen einfach ein Issue öffnen oder per Mail kontaktieren.
 
 Viel Spaß beim Entwickeln!

@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login.jsx";
-import Dashboard from "./components/Dashboard.jsx";
+import SetupAdmin from "./components/SetupAdmin.jsx";
 import { useAuth } from "./services/api.ts";
 
 export default function App() {
@@ -10,6 +10,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/setup" element={<SetupAdmin />} />
       <Route
         path="/dashboard"
         element={token ? <Dashboard /> : <Navigate to="/login" replace />}
