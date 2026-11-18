@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login.jsx";
 import SetupAdmin from "./components/SetupAdmin.jsx";
+import Dashboard from "./components/Dashboard.jsx";
 import { useAuth } from "./services/api.ts";
 
 export default function App() {
