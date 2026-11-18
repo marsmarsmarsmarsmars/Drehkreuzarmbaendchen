@@ -11,7 +11,7 @@ if [ "$LOCAL" = "$REMOTE" ]; then
 fi
 echo "Updating to latest version..."
 sudo -u armbaendchen git reset --hard origin/main
-sudo -u armbaendchen bash -c "source venv/bin/activate && pip install --no-cache-dir -r backend/requirements.txt --upgrade"
+sudo -u armbaendchen bash -c "source venv/bin/activate && pip install --no-cache-dir -r backend/requirements.txt"
 sudo -u armbaendchen python -c "from backend.app import models, main; models.Base.metadata.create_all(bind=main.engine)"
 sudo systemctl restart armbaendchen.service
 echo "Update complete."
