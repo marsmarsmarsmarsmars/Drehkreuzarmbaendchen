@@ -8,8 +8,8 @@ set -e
 # and automatically restores a missing frontend build.
 # ------------------------------------------------------------
 
-APP_DIR="/opt/armbaendchen"
-cd "$APP_DIR"
+# Ensure correct ownership of the whole installation directory before any operations
+sudo chown -R armbaendchen:armbaendchen "$APP_DIR"
 
 # -------- Parse optional flags --------------------------------
 REPAIR=0
@@ -86,7 +86,7 @@ sudo chown -R armbaendchen:armbaendchen "$APP_DIR"
 # Install requirements (no upgrade) inside the venv as the correct user
 sudo -u armbaendchen bash -c "source venv/bin/activate && pip install --no-cache-dir -r backend/requirements.txt"
 # Apply any pending database migrations / create tables
-sudo -u armbaendchen python -c "from backend.app import models, main; models.Base.metadata.create_all(bind=main.engine)"
+sudo -u armbaendchen "$APP_DIR/venv/bin/python" -c "from backend.app import models, main; models.Base.metadata.create_all(bind=main.engine)"
 
 # ------------------------------------------------------------
 # Restart the service (or start it if it was stopped)

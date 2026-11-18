@@ -49,12 +49,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# Serve built frontend
-# Serve built frontend if it exists
+# Serve built frontend (mount will be done later)
+
 dist_dir = os.path.abspath(os.path.join(BASE_DIR, "..", "client", "dist"))
-if os.path.isdir(dist_dir):
-    # Static files will be mounted after API routes (see end of file)
-    app.mount("/", StaticFiles(directory=dist_dir), name="static")
 
 
 # Dependency – provides a DB session per request
@@ -229,4 +226,4 @@ def start_background_tasks():
 
 # Serve built frontend if it exists
 if os.path.isdir(dist_dir):
-    app.mount("/", StaticFiles(directory=dist_dir), name="static")
+    app.mount("/", StaticFiles(directory=dist_dir, html=True), name="static")

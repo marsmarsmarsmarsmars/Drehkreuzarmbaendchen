@@ -72,7 +72,7 @@ npm run dev   # Vite dev‑Server, standardmäßig http://localhost:5173
 ```
 Das Frontend kommuniziert mit dem Backend über `http://localhost:8000/api`.
 
-## Installation auf Raspberry Pi (ARMv6, Raspberry OS Lite)
+# Installation auf Raspberry Pi (ARMv6, Raspberry OS Lite)
 
 Ein einzelner Befehl installiert alles und richtet einen System‑d‑Dienst ein:
 
@@ -99,7 +99,7 @@ sudo systemctl {start|stop|restart|status} armbaendchen
 ```
 Der Service läuft automatisch nach dem Booten.
 
-## Update
+# Update
 
 Ein Update‑Helper ist installiert unter `/opt/armbaendchen/service/armbaendchen-update.sh`. Zum Aktualisieren führen Sie aus:
 
@@ -107,6 +107,9 @@ Ein Update‑Helper ist installiert unter `/opt/armbaendchen/service/armbaendche
 sudo /opt/armbaendchen/service/armbaendchen-update.sh
 ```
 Der Helper pullt die neuesten Änderungen, installiert neue Python‑Abhängigkeiten, führt ggf. notwendige Datenbankschema‑Updates durch und startet den Service neu.
+
+* **Neu:** Das Update‑Script unterstützt jetzt das Flag `--repair` (oder `--force`). Mit diesem Flag werden selbst bei identischem Repository‑Stand ein vollständiger Reset und eine Neuinstallation des Frontends erzwungen – ideal zur Wiederherstellung einer beschädigten oder unvollständigen Installation.
+* **Neu:** Bei einem regulären Update prüft das Skript zudem, ob `client/dist/index.html` fehlt und führt dann ebenfalls einen Reset des Frontends aus.
 
 ## Weiterführende Dokumentation
 
