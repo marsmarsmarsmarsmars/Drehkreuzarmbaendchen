@@ -87,7 +87,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 
 from fastapi.security import OAuth2PasswordBearer
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/login", auto_error=False)
 
 def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)) -> models.User:
     try:
@@ -108,11 +108,18 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
 # ---------------------------------------------------------------------------
 
 @app.post("/api/users", response_model=UserRead)
-def create_user(user: UserCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    # If no users exist yet, allow creation of the first (admin) user without authentication
+def create_user(user: UserCreate, db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
+    # Allow creation of first user without authentication
     if db.query(models.User).first() is None:
         created = crud.create_user(db, username=user.username, password=user.password, role=user.role)
         return created
+    # If token missing or invalid, raise authentication error
+    if not token:
+        raise HTTPException(status_code=401, detail=i18n.MESSAGES["invalid_credentials"])
+    try:
+        current_user = get_current_user(token, db)
+    except HTTPException:
+        raise HTTPException(status_code=401, detail=i18n.MESSAGES["invalid_credentials"])
     if current_user.role != "admin":
         raise HTTPException(status_code=403, detail="Nur Admins dürfen Benutzer anlegen")
     created = crud.create_user(db, username=user.username, password=user.password, role=user.role)
@@ -185,15 +192,10 @@ def return_band(band_id: int, db: Session = Depends(get_db), current_user: model
     return ret
 
 
-# ---------------------------------------------------------------------------
+
+
 # ---------------------------------------------------------------------------
 # First‑setup endpoint – indicates whether any users exist
-# ---------------------------------------------------------------------------
-@app.get("/api/first-setup")
-def first_setup(db: Session = Depends(get_db)):
-    any_user = db.query(models.User).first()
-    return {"first_setup": any_user is None}
-
 # ---------------------------------------------------------------------------
 
 @app.get("/api/export")

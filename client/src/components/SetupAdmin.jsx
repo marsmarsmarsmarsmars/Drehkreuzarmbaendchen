@@ -32,7 +32,7 @@ export default function SetupAdmin() {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full border p-1"
+            className="w-full p-2 rounded bg-moon-700 text-white"
             required
           />
         </div>
@@ -42,7 +42,7 @@ export default function SetupAdmin() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full border p-1"
+            className="w-full p-2 rounded bg-moon-700 text-white"
             required
           />
         </div>
