@@ -77,7 +77,13 @@ Das Frontend kommuniziert mit dem Backend über `http://localhost:8000/api`.
 Ein einzelner Befehl installiert alles und richtet einen System‑d‑Dienst ein:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmb%C3%A4ndchen/main/install-armv6.sh | sudo bash -s
+# Interactive (default)
+curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/main/install-armv6.sh | sudo bash -s
+
+# Non‑interactive (skip confirmation)
+curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/main/install-armv6.sh | sudo bash -s -- --yes
+# or set the env var:
+AUTOYES=1 curl -fsSL https://raw.githubusercontent.com/marsmarsmarsmarsmars/Drehkreuzarmbaendchen/main/install-armv6.sh | sudo bash -s
 ```
 
 Der Installer prüft die Python‑Version, installiert notwendige Pakete, legt den System‑Benutzer `armbaendchen` an, klont das Repository nach `/opt/armbaendchen`, richtet ein Python‑Virtualenv ein, erstellt das Daten‑Verzeichnis und installiert den System‑d‑Dienst **armbaendchen.service**.

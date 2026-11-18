@@ -1,24 +1,33 @@
 #!/usr/bin/env bash
 set -e
 
-# 1. Check Python version >= 3.11
+
+
+# 2. Required packages
+DEPS=(git python3 python3-venv python3-pip build-essential libffi-dev libssl-dev)
+# If the script is run with "--yes" or the AUTOYES env var is set, skip the confirmation prompt.
+if [[ "$1" == "--yes" ]] || [[ -n "$AUTOYES" ]]; then
+  echo "Auto‑confirm enabled – proceeding with package installation."
+else
+  echo "The following packages will be installed (if not already present): ${DEPS[*]}"
+  read -r -p "Continue? [y/N] " REPLY
+  # Abort only on explicit 'n' or 'N'
+  if [[ $REPLY =~ ^[Nn]$ ]]; then
+    echo "Aborting."
+    exit 1
+  fi
+fi
+
+sudo apt-get update
+sudo apt-get install -y "${DEPS[@]}"
+
+# 2. Check Python version >= 3.11
 PYVER=$(python3 -c 'import sys; print("%d.%d" % sys.version_info[:2])')
 if (( $(echo "$PYVER < 3.11" | bc -l) )); then
   echo "Python 3.11 or newer is required (found $PYVER). Aborting."
   exit 1
 fi
 
-# 2. Required packages
-DEPS=(git python3 python3-venv python3-pip build-essential libffi-dev libssl-dev)
-echo "The following packages will be installed (if not already present): ${DEPS[*]}"
-read -p "Continue? [y/N] " -r
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-  echo "Aborting."
-  exit 1
-fi
-
-sudo apt-get update
-sudo apt-get install -y "${DEPS[@]}"
 
 # 3. Create system user
 if ! id -u armbaendchen >/dev/null 2>&1; then
