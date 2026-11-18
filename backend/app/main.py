@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 import asyncio
+from fastapi.staticfiles import StaticFiles
 
 from . import models, crud, auth, i18n, scheduler
 from .models import (
