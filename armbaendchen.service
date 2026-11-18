@@ -1,16 +1,1 @@
-# This file has been moved to service/armbaendchen.service. It is kept for backward compatibility only.
-
-After=network.target
-
-[Service]
-User=armbaendchen
-Group=armbaendchen
-WorkingDirectory=/opt/armbaendchen
-Environment=PATH=/opt/armbaendchen/venv/bin
-ExecStart=/opt/armbaendchen/venv/bin/uvicorn backend.app.main:app --host 0.0.0.0 --port 8000
-Restart=on-failure
-StandardOutput=journal
-StandardError=journal
-
-[Install]
-WantedBy=multi-user.target
+# Deprecated placeholder – the real unit lives in /opt/armbaendchen/service/armbaendchen.service

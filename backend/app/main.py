@@ -50,7 +50,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 # Serve built frontend
-app.mount("/", StaticFiles(directory=os.path.join(BASE_DIR, "client", "dist"), html=True)
+# Serve built frontend if it exists
+dist_dir = os.path.abspath(os.path.join(BASE_DIR, "..", "client", "dist"))
+if os.path.isdir(dist_dir):
+    app.mount("/", StaticFiles(directory=dist_dir), name="static")
 
 
 # Dependency – provides a DB session per request

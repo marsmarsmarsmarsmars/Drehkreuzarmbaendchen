@@ -19,7 +19,7 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import relationship, declarative_base
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 Base = declarative_base()
 
@@ -95,7 +95,7 @@ class Token(BaseModel):
 class UserCreate(BaseModel):
     username: str = Field(..., min_length=3, max_length=30)
     password: str = Field(..., min_length=5)
-    role: str = Field(..., regex="^(admin|user)$")
+    role: str = Field(..., pattern="^(admin|user)$")
 
 
 class UserRead(BaseModel):
@@ -103,8 +103,7 @@ class UserRead(BaseModel):
     username: str
     role: str
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class NumberRangeCreate(BaseModel):
@@ -119,8 +118,7 @@ class NumberRangeRead(BaseModel):
     range_end: int
     valid_until: date
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class BandCreate(BaseModel):
@@ -135,8 +133,7 @@ class BandRead(BaseModel):
     issued: bool = False
     person_name: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class IssueCreate(BaseModel):
@@ -151,5 +148,4 @@ class IssueRead(BaseModel):
     person_name: str
     timestamp: datetime
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)

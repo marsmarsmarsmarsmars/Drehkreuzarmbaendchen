@@ -32,6 +32,7 @@ fi
 
 sudo apt-get update
 sudo apt-get install -y --no-install-recommends "${DEPS[@]}"
+sudo apt-mark manual "${DEPS[@]}"
 
 # ----------------------------
 # 2. Check Python version >= 3.11
@@ -85,7 +86,7 @@ User=armbaendchen
 Group=armbaendchen
 WorkingDirectory=/opt/armbaendchen
 Environment=PATH=/opt/armbaendchen/venv/bin
-ExecStart=/opt/armbaendchen/venv/bin/uvicorn backend.app.main:app --host 0.0.0.0 --port 8000
+ExecStart=/opt/armbaendchen/venv/bin/python -m uvicorn backend.app.main:app --host 0.0.0.0 --port 8000
 Restart=on-failure
 StandardOutput=journal
 StandardError=journal
@@ -115,7 +116,7 @@ echo "  sudo /opt/armbaendchen/service/armbaendchen-update.sh"
 if [[ $CLEANUP -eq 1 ]]; then
   echo "Cleaning up compiler tools and pip cache to free space..."
   sudo apt-get purge -y build-essential gcc g++ cpp
-  sudo apt-get autoremove --purge -y
+
   sudo apt-get clean
   sudo rm -rf /var/lib/apt/lists/* /root/.cache/pip /home/armbaendchen/.cache/pip
   echo "Cleanup completed."
