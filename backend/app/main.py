@@ -186,7 +186,14 @@ def return_band(band_id: int, db: Session = Depends(get_db), current_user: model
 
 
 # ---------------------------------------------------------------------------
-# Export endpoint (returns JSON; CSV can be downloaded via static file server)
+# ---------------------------------------------------------------------------
+# First‑setup endpoint – indicates whether any users exist
+# ---------------------------------------------------------------------------
+@app.get("/api/first-setup")
+def first_setup(db: Session = Depends(get_db)):
+    any_user = db.query(models.User).first()
+    return {"first_setup": any_user is None}
+
 # ---------------------------------------------------------------------------
 
 @app.get("/api/export")
