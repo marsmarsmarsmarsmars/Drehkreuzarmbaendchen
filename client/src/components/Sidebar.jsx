@@ -1,0 +1,47 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import i18n from "../i18n/de.json";
+
+export default function Sidebar() {
+  const [open, setOpen] = useState(false);
+
+  const toggle = () => setOpen(!open);
+
+  const menuItems = [
+    { label: "Armbändchen", to: "/bands" },
+    { label: "Personen", to: "/people" },
+    { label: "Personen anlegen", to: "/people/create" },
+    { label: "Personen importieren", to: "/people/import" },
+    { label: "Trainingsgruppen", to: "/groups" },
+    { label: "Einstellungen", to: "/settings" },
+    { label: "Anleitung", to: "/guide" },
+  ];
+
+  return (
+    <>
+      {/* Hamburger for mobile */}
+      <button
+        className="md:hidden p-2 fixed top-2 left-2 z-20 bg-moon-700 text-white rounded"
+        onClick={toggle}
+        aria-label="Menu öffnen"
+      >
+        ☰
+      </button>
+      {/* Sidebar */}
+      <nav
+        className={`fixed inset-y-0 left-0 bg-moon-800 text-white w-64 transform ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition-transform duration-200 ease-in-out z-10`}
+      >
+        <div className="p-4 border-b border-moon-600">
+          <h2 className="text-lg font-bold">{i18n["app.title"] || "Drehkreuz‑Armbändchen"}</h2>
+        </div>
+        <ul className="mt-2">
+          {menuItems.map((item) => (
+            <li key={item.to} className="px-4 py-2 hover:bg-moon-700">
+              <Link to={item.to} onClick={() => setOpen(false)}>{item.label}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </>
+  );
+}

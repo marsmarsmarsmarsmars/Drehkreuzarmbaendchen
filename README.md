@@ -145,3 +145,56 @@ curl -X POST http://<IP>:8000/api/users \
 Bei Fragen oder Erweiterungswünschen einfach ein Issue öffnen oder per Mail kontaktieren.
 
 Viel Spaß beim Entwickeln!
+
+---
+
+## Anwendung – Menü und Funktionen
+
+### Menüstruktur (Desktop‑ und Mobile‑Ansicht)
+* **Desktop** – ein festes seitliches Menü auf der linken Seite.
+* **Mobile** – das Menü ist eingeklappt und wird per Klick (Hamburger‑Icon) geöffnet.
+
+#### Menüpunkte
+- **Armbändchen** – Übersicht über alle Bänder.
+- **Personen**
+  - **Anlegen** – neue Personen hinzufügen.
+  - **Importieren** – Personen‑Stammdaten aus einer CSV‑Datei laden.
+- **Trainingsgruppen** – Verwaltung von Trainingsgruppen.
+- **Einstellungen**
+  - **Nummernkreise** – Nummernkreis‑Verwaltung.
+  - **Trainingsgruppen** – Einstellungen zu Trainingsgruppen.
+  - **Benutzerverwaltung** – Admins und Rollen verwalten.
+- **Anleitung** – Diese Dokumentation (online verfügbar im UI).
+
+### Armbändchen‑Übersicht
+| Feld | Beschreibung |
+|------|--------------|
+| **Nummer** | Eindeutige, unveränderliche Chip‑Nummer (nicht editierbar). |
+| **Status** | `verfügbar`, `reserviert`, `ausgegeben`, `Verlust`. |
+| **Person** | Zugeordnete Person (falls reserviert/ausgegeben). |
+| **Datum der Ausgabe** | Zeitpunkt der Ausgabe. |
+| **Datum der Rückgabe** | Zeitpunkt der Rückgabe. |
+
+#### Aktionen
+* **Reservieren** – Band einer Person zuordnen (ohne Ausgabe). 
+* **Ausgabe festhalten** – Ausgabedatum und ausführende Person speichern.
+* **Rückgabe festhalten** – Rückgabedatum erfassen; optional wird die Zuordnung gelöscht (Bestätigung nötig).
+* **Reservierung aufheben** – Zuordnung entfernen, ohne Rückgabe.
+* **Historie anzeigen** – Vollständige Protokoll‑Ansicht für jedes Band.
+
+### Personen‑Verwaltung
+* **Liste** aller Personen mit Übersicht über zugeordnete Bänder.
+* **Band zuordnen** – gleich wie bei Armbändchen (Reservieren, Ausgabe, Rückgabe, Aufhebung).
+* **Bänder tauschen** – Zwei Personen können Bänder tauschen (Bestätigung erforderlich).
+* **Mehrere Bänder pro Person** – Ausnahme, erfordert explizite Bestätigung durch den Nutzer.
+* **Verlust‑Markierung** – Bei Verlust‑Status kann „nicht erneut fragen“ aktiviert werden, sodass keine weitere Nachfrage erfolgt.
+* **Historie** – Chronologische Ansicht aller Aktionen einer Person.
+
+---
+
+## Anleitung verfügbar im System
+Die komplette Bedienungsanleitung ist jetzt direkt über den Menüpunkt **„Anleitung“** im Frontend abrufbar. Dort finden Sie dieselben Informationen wie in dieser README, inklusive Screenshots und Schritt‑für‑Schritt‑Beschreibungen.
+
+---
+
+Viel Spaß beim Entwickeln!
