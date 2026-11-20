@@ -7,6 +7,11 @@ import { useAuth } from "./services/api.ts";
 import Sidebar from "./components/Sidebar.jsx";
 import Bands from "./components/Bands.jsx";
 import Guide from "./components/Guide.jsx";
+import People from "./components/People.jsx";
+import PeopleCreate from "./components/PeopleCreate.jsx";
+import PeopleImport from "./components/PeopleImport.jsx";
+import Groups from "./components/Groups.jsx";
+import Settings from "./components/Settings.jsx";
 
 export default function App() {
   const { token } = useAuth();
@@ -21,6 +26,11 @@ export default function App() {
           <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" replace />} />
           <Route path="/bands" element={token ? <Bands /> : <Navigate to="/login" replace />} />
           <Route path="/guide" element={token ? <Guide /> : <Navigate to="/login" replace />} />
+          <Route path="/people" element={token ? <People /> : <Navigate to="/login" replace />} />
+          <Route path="/people/create" element={token ? <PeopleCreate /> : <Navigate to="/login" replace />} />
+          <Route path="/people/import" element={token ? <PeopleImport /> : <Navigate to="/login" replace />} />
+          <Route path="/groups" element={token ? <Groups /> : <Navigate to="/login" replace />} />
+          <Route path="/settings" element={token ? <Settings /> : <Navigate to="/login" replace />} />
           <Route path="*" element={<Navigate to={token ? "/dashboard" : "/login"} replace />} />
         </Routes>
       </div>

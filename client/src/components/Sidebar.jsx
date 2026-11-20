@@ -9,9 +9,14 @@ export default function Sidebar() {
 
   const menuItems = [
     { label: "Armbändchen", to: "/bands" },
-    { label: "Personen", to: "/people" },
-    { label: "Personen anlegen", to: "/people/create" },
-    { label: "Personen importieren", to: "/people/import" },
+    {
+      label: "Personen",
+      to: "/people",
+      children: [
+        { label: "anlegen", to: "/people/create" },
+        { label: "importieren", to: "/people/import" },
+      ],
+    },
     { label: "Trainingsgruppen", to: "/groups" },
     { label: "Einstellungen", to: "/settings" },
     { label: "Anleitung", to: "/guide" },
@@ -36,9 +41,16 @@ export default function Sidebar() {
         </div>
         <ul className="mt-2">
           {menuItems.map((item) => (
-            <li key={item.to} className="px-4 py-2 hover:bg-moon-700">
-              <Link to={item.to} onClick={() => setOpen(false)}>{item.label}</Link>
-            </li>
+            <React.Fragment key={item.to}>
+              <li className="px-4 py-2 hover:bg-moon-700">
+                <Link to={item.to} onClick={() => setOpen(false)}>{item.label}</Link>
+              </li>
+              {item.children && item.children.map((child) => (
+                <li key={child.to} className="pl-8 pr-4 py-1 hover:bg-moon-700 text-sm text-gray-300">
+                  <Link to={child.to} onClick={() => setOpen(false)}>{child.label}</Link>
+                </li>
+              ))}
+            </React.Fragment>
           ))}
         </ul>
       </nav>
