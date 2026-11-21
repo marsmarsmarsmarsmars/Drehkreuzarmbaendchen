@@ -25,6 +25,7 @@ from .models import (
     NumberRangeCreate,
     NumberRangeRead,
     BandCreate,
+    BandRead,
     PersonCreate,
     PersonRead,
     IssueCreate,
