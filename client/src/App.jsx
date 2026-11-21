@@ -9,7 +9,7 @@ import Bands from "./components/Bands.jsx";
 import Guide from "./components/Guide.jsx";
 import People from "./components/People.jsx";
 import PeopleCreate from "./components/PeopleCreate.jsx";
-import PeopleImport from "./components/PeopleImport.jsx";
+import PersonEdit from "./components/PersonEdit.jsx";
 import Groups from "./components/Groups.jsx";
 import UsersList from "./components/UsersList.jsx";
 import UserCreate from "./components/UserCreate.jsx";
@@ -29,7 +29,7 @@ export default function App() {
           <Route path="/bands" element={token ? <Bands /> : <Navigate to="/login" replace />} />
           <Route path="/guide" element={token ? <Guide /> : <Navigate to="/login" replace />} />
           <Route path="/people" element={token ? <People /> : <Navigate to="/login" replace />} />
-          <Route path="/people/create" element={token ? <PeopleCreate /> : <Navigate to="/login" replace />} />
+          <Route path="/people/:personId/edit" element={token ? <PersonEdit /> : <Navigate to="/login" replace />} />
           <Route path="/people/import" element={token ? <PeopleImport /> : <Navigate to="/login" replace />} />
           <Route path="/groups" element={token ? <Groups /> : <Navigate to="/login" replace />} />
           <Route path="/users" element={token ? <UsersList /> : <Navigate to="/login" replace />} />

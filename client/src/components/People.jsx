@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../services/api.ts";
-import i18n from "../i18n/de.json";
+import { Link } from "react-router-dom";
 
 export default function People() {
   const [people, setPeople] = useState([]);
@@ -28,6 +28,7 @@ export default function People() {
             <th className="p-2 border">ID</th>
             <th className="p-2 border">Name</th>
             <th className="p-2 border">Email</th>
+            <th className="p-2 border">Aktionen</th>
           </tr>
         </thead>
         <tbody>
@@ -36,6 +37,9 @@ export default function People() {
               <td className="p-2 border">{p.id}</td>
               <td className="p-2 border">{p.name}</td>
               <td className="p-2 border">{p.email || "-"}</td>
+              <td className="p-2 border text-sm text-gray-300">
+                <Link to={`/people/${p.id}/edit`}>Bearbeiten</Link>
+              </td>
             </tr>
           ))}
         </tbody>
