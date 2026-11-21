@@ -17,19 +17,33 @@ from . import models, auth
 # User handling
 # ---------------------------------------------------------------------------
 
-def create_user(db: Session, username: str, password: str, role: str = "user") -> models.User:
-    existing = db.query(models.User).filter(models.User.username == username).first()
-    if existing:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Benutzername bereits vergeben",
-        )
-    password_hash = auth.get_password_hash(password)
-    user = models.User(username=username, password_hash=password_hash, role=role)
-    db.add(user)
+def get_all_users(db: Session) -> List[models.User]:
+    return db.query(models.User).all()
+
+
+def get_user(db: Session, user_id: int) -> models.User:
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Benutzer nicht gefunden")
+    return user
+
+def update_user(db: Session, user_id: int, username: Optional[str] = None, password: Optional[str] = None, role: Optional[str] = None) -> models.User:
+    user = get_user(db, user_id)
+    if username:
+        user.username = username
+    if password:
+        user.password_hash = auth.get_password_hash(password)
+    if role:
+        user.role = role
     db.commit()
     db.refresh(user)
     return user
+
+def delete_user(db: Session, user_id: int) -> None:
+    user = get_user(db, user_id)
+    db.delete(user)
+    db.commit()
+
 
 
 def authenticate_user(db: Session, username: str, password: str) -> Optional[models.User]:

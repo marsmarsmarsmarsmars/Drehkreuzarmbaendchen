@@ -11,7 +11,9 @@ import People from "./components/People.jsx";
 import PeopleCreate from "./components/PeopleCreate.jsx";
 import PeopleImport from "./components/PeopleImport.jsx";
 import Groups from "./components/Groups.jsx";
-import Settings from "./components/Settings.jsx";
+import UsersList from "./components/UsersList.jsx";
+import UserCreate from "./components/UserCreate.jsx";
+import UserEdit from "./components/UserEdit.jsx";
 
 export default function App() {
   const { token } = useAuth();
@@ -30,7 +32,9 @@ export default function App() {
           <Route path="/people/create" element={token ? <PeopleCreate /> : <Navigate to="/login" replace />} />
           <Route path="/people/import" element={token ? <PeopleImport /> : <Navigate to="/login" replace />} />
           <Route path="/groups" element={token ? <Groups /> : <Navigate to="/login" replace />} />
-          <Route path="/settings" element={token ? <Settings /> : <Navigate to="/login" replace />} />
+          <Route path="/users" element={token ? <UsersList /> : <Navigate to="/login" replace />} />
+          <Route path="/users/create" element={token ? <UserCreate /> : <Navigate to="/login" replace />} />
+          <Route path="/users/:userId/edit" element={token ? <UserEdit /> : <Navigate to="/login" replace />} />
           <Route path="*" element={<Navigate to={token ? "/dashboard" : "/login"} replace />} />
         </Routes>
       </div>

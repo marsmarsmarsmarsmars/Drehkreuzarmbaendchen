@@ -103,6 +103,31 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
     return user
 
 
+@app.get("/api/users", response_model=list[UserRead])
+def list_users(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Benutzer auflisten")
+    return crud.get_all_users(db)
+
+@app.get("/api/users/{user_id}", response_model=UserRead)
+def get_user_endpoint(user_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Benutzer ansehen")
+    return crud.get_user(db, user_id)
+
+@app.put("/api/users/{user_id}", response_model=UserRead)
+def update_user_endpoint(user_id: int, user: UserCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Benutzer ändern")
+    return crud.update_user(db, user_id, username=user.username, password=user.password, role=user.role)
+
+@app.delete("/api/users/{user_id}")
+def delete_user_endpoint(user_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Benutzer löschen")
+    crud.delete_user(db, user_id)
+    return {"detail": "Benutzer gelöscht"}
+
 # ---------------------------------------------------------------------------
 # User management (only admin can create users for now)
 # ---------------------------------------------------------------------------
