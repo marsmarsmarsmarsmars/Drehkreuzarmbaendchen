@@ -222,26 +222,12 @@ def return_band(band_id: int, db: Session = Depends(get_db), current_user: model
 
 
 
-# ---------------------------------------------------------------------------
-# First‑setup endpoint – indicates whether any users exist
-# ---------------------------------------------------------------------------
+@app.get("/api/first-setup")
+def first_setup_endpoint(db: Session = Depends(get_db)):
+    # Returns true when no users exist (first setup needed)
+    has_user = db.query(models.User).first() is not None
+    return {"first_setup": not has_user}
 
-@app.get("/api/export")
-def export_data(format: str = "json", db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
-    data = crud.generate_export_data(db)
-    if format == "csv":
-        # generate CSV on the fly
-        import io, csv
-        output = io.StringIO()
-        writer = csv.writer(output, delimiter=";")
-        writer.writerow(["band_number", "issued", "person_name"])
-        for row in data:
-            writer.writerow([row["band_number"], row["issued"], row["person_name"]])
-        return {
-            "filename": "export.csv",
-            "content": output.getvalue(),
-        }
-    return data
 
 
 # ---------------------------------------------------------------------------
