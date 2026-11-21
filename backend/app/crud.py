@@ -157,7 +157,38 @@ def return_band(db: Session, band_id: int, user_id: int) -> models.Issue:
     return ret
 
 
-def _touch_export_meta(db: Session) -> None:
+def create_person(db: Session, name: str, email: Optional[str] = None) -> models.Person:
+    person = models.Person(name=name, email=email)
+    db.add(person)
+    db.commit()
+    db.refresh(person)
+    return person
+
+def get_all_persons(db: Session) -> List[models.Person]:
+    return db.query(models.Person).all()
+
+def get_person(db: Session, person_id: int) -> models.Person:
+    person = db.query(models.Person).filter(models.Person.id == person_id).first()
+    if not person:
+        raise HTTPException(status_code=404, detail="Person nicht gefunden")
+    return person
+
+def update_person(db: Session, person_id: int, name: Optional[str] = None, email: Optional[str] = None) -> models.Person:
+    person = get_person(db, person_id)
+    if name is not None:
+        person.name = name
+    if email is not None:
+        person.email = email
+    db.commit()
+    db.refresh(person)
+    return person
+
+def delete_person(db: Session, person_id: int) -> None:
+    person = get_person(db, person_id)
+    db.delete(person)
+    db.commit()
+
+# Existing functions ...
     meta = db.query(models.ExportMeta).filter(models.ExportMeta.id == 1).first()
     if not meta:
         meta = models.ExportMeta(id=1, last_change=datetime.utcnow())

@@ -52,6 +52,12 @@ class NumberRange(Base):
     bands = relationship("Band", back_populates="range")
 
 
+class Person(Base):
+    __tablename__ = "persons"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, nullable=True)
+
 class Band(Base):
     __tablename__ = "bands"
     id = Column(Integer, primary_key=True, index=True)
@@ -135,6 +141,17 @@ class BandRead(BaseModel):
 
     model_config = ConfigDict(from_attributes=True)
 
+
+class PersonCreate(BaseModel):
+    name: str = Field(..., min_length=1)
+    email: Optional[str] = None
+
+class PersonRead(BaseModel):
+    id: int
+    name: str
+    email: Optional[str] = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 class IssueCreate(BaseModel):
     person_name: str

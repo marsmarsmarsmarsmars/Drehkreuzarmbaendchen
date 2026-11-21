@@ -9,7 +9,7 @@ import os
 from datetime import timedelta
 from typing import Generator
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status, File, UploadFile
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
@@ -25,7 +25,8 @@ from .models import (
     NumberRangeCreate,
     NumberRangeRead,
     BandCreate,
-    BandRead,
+    PersonCreate,
+    PersonRead,
     IssueCreate,
     IssueRead,
 )
@@ -73,7 +74,8 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     user = crud.authenticate_user(db, form_data.username, form_data.password)
     if not user:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            File,
+    UploadFile,_code=status.HTTP_401_UNAUTHORIZED,
             detail=i18n.MESSAGES["invalid_credentials"],
             headers={"WWW-Authenticate": "Bearer"},
         )
@@ -253,6 +255,54 @@ def start_background_tasks():
     loop.create_task(scheduler.export_worker(SessionLocal))
 
 
-# Serve built frontend if it exists
+# ---------------------------------------------------------------------------
+# Person endpoints
+# ---------------------------------------------------------------------------
+
+@app.get("/api/persons", response_model=list[PersonRead])
+def list_persons(db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Personen sehen")
+    return crud.get_all_persons(db)
+
+@app.post("/api/persons", response_model=PersonRead)
+def create_person_endpoint(person: PersonCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Personen anlegen")
+    return crud.create_person(db, name=person.name, email=person.email)
+
+@app.put("/api/persons/{person_id}", response_model=PersonRead)
+def update_person_endpoint(person_id: int, person: PersonCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Personen ändern")
+    return crud.update_person(db, person_id, name=person.name, email=person.email)
+
+@app.delete("/api/persons/{person_id}")
+def delete_person_endpoint(person_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Personen löschen")
+    crud.delete_person(db, person_id)
+    return {"detail": "Person gelöscht"}
+
+@app.post("/api/persons/import")
+def import_persons(file: UploadFile = File(...), db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(status_code=403, detail="Nur Admins dürfen Personen importieren")
+    import xml.etree.ElementTree as ET
+    try:
+        content = file.file.read()
+        root = ET.fromstring(content)
+        count = 0
+        for person_elem in root.findall('.//person'):
+            name = person_elem.findtext('name')
+            email = person_elem.findtext('email')
+            if name:
+                crud.create_person(db, name=name, email=email)
+                count += 1
+        return {"detail": f"{count} Personen importiert"}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+# Existing endpoints ...
 if os.path.isdir(dist_dir):
     app.mount("/", StaticFiles(directory=dist_dir, html=True), name="static")
