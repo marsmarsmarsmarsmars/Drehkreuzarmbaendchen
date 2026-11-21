@@ -23,6 +23,7 @@ export default function App() {
       <Sidebar />
       <div className="flex-1 overflow-auto p-4">
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/setup" element={<SetupAdmin />} />
           <Route path="/dashboard" element={token ? <Dashboard /> : <Navigate to="/login" replace />} />

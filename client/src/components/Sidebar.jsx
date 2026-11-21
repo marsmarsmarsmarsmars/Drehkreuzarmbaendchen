@@ -1,11 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import i18n from "../i18n/de.json";
 
 export default function Sidebar() {
-  const [open, setOpen] = useState(false);
+  const location = useLocation();
 
-  const toggle = () => setOpen(!open);
+  // Hide sidebar on login or start page
+  if (["/login", "/"].includes(location.pathname)) {
+    return null;
+  }
+
 
   const menuItems = [
     { label: "Armbändchen", to: "/bands" },
