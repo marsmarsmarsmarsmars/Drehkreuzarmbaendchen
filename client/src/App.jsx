@@ -9,7 +9,7 @@ import Bands from "./components/Bands.jsx";
 import Guide from "./components/Guide.jsx";
 import People from "./components/People.jsx";
 import PeopleCreate from "./components/PeopleCreate.jsx";
-import PersonEdit from "./components/PersonEdit.jsx";
+import PeopleImport from "./components/PeopleImport.jsx";
 import Groups from "./components/Groups.jsx";
 import UsersList from "./components/UsersList.jsx";
 import UserCreate from "./components/UserCreate.jsx";

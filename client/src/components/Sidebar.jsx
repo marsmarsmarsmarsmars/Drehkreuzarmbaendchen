@@ -4,6 +4,8 @@ import i18n from "../i18n/de.json";
 
 export default function Sidebar() {
   const location = useLocation();
+  const [open, setOpen] = useState(false);
+  const toggle = () => setOpen(!open);
 
   // Hide sidebar on login or start page
   if (["/login", "/"].includes(location.pathname)) {
