@@ -9,9 +9,12 @@ export default function Login() {
   const [error, setError] = useState(null);
   const [firstSetup, setFirstSetup] = useState(null);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, logout, token } = useAuth();
 
   useEffect(() => {
+    if (token) {
+      logout();
+    }
     const fetchFirstSetup = async () => {
       try {
         const response = await fetch("/api/first-setup");
