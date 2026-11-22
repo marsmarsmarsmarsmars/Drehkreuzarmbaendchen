@@ -14,9 +14,10 @@ import PersonEdit from "./components/PersonEdit.jsx";
 import UsersList from "./components/UsersList.jsx";
 import UserCreate from "./components/UserCreate.jsx";
 import UserEdit from "./components/UserEdit.jsx";
+import { useAuth } from "./services/api.ts";
 
 export default function App() {
-  const token = localStorage.getItem("access_token");
+  const { token } = useAuth();
 
   return (
     <div className="flex h-screen">

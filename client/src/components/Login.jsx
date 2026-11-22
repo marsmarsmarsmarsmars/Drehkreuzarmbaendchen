@@ -11,10 +11,18 @@ export default function Login() {
   const navigate = useNavigate();
   const { login, logout, token } = useAuth();
 
+  // If already logged in, show message instead of login form
+  if (token) {
+    return (
+      <div className="max-w-sm w-full bg-moon-800 p-6 rounded shadow-lg">
+        <h2 className="text-xl mb-4 text-center">{i18n["login.title"]}</h2>
+        <div className="text-green-500 text-center mb-2">Sie sind bereits eingeloggt</div>
+      </div>
+    );
+  }
+
+
   useEffect(() => {
-    if (token) {
-      logout();
-    }
     const fetchFirstSetup = async () => {
       try {
         const response = await fetch("/api/first-setup");
