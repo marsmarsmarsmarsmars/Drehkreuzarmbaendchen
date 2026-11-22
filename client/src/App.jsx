@@ -10,6 +10,7 @@ import People from "./components/People.jsx";
 import PeopleCreate from "./components/PeopleCreate.jsx";
 import PeopleImport from "./components/PeopleImport.jsx";
 import Groups from "./components/Groups.jsx";
+import PersonEdit from "./components/PersonEdit.jsx";
 import UsersList from "./components/UsersList.jsx";
 import UserCreate from "./components/UserCreate.jsx";
 import UserEdit from "./components/UserEdit.jsx";
