@@ -41,7 +41,7 @@ export default function Login() {
       >
       <h2 className="text-xl mb-4 text-center">{i18n["login.title"]}</h2>
       {error && <div className="text-red-400 mb-2">{error}</div>}
-      {firstSetup === null ? null : firstSetup ? (
+      {firstSetup ? (
         <div className="text-center mt-4">
           <Link to="/setup" className="text-blue-500 hover:underline">Ersten Admin anlegen</Link>
         </div>
