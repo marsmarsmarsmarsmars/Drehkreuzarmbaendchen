@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../services/api.ts";
 import i18n from "../i18n/de.json";
 
 export default function Sidebar() {
   const location = useLocation();
+  const { logout } = useAuth();
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen(!open);
 
@@ -58,8 +60,13 @@ export default function Sidebar() {
               ))}
             </React.Fragment>
           ))}
-        </ul>
-      </nav>
+          <li className="px-4 py-2 mt-4 border-t border-moon-600">
+            <button onClick={logout} className="w-full text-left hover:bg-moon-700">
+              Abmelden
+            </button>
+          </li>
+           </ul>
+        </nav>
     </>
   );
 }
